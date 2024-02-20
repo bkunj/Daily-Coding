@@ -1,0 +1,42 @@
+Question 1.)  Remove Element
+URL: https://leetcode.com/problems/remove-element/description/ 
+
+Approach:
+Using Two Pointer Approach:
+--> We can declare the two pointer, first is pointing to starting element and the second poiner is pointing towards last elements.
+--> Traverse each element from starting point and check if value is matching then swap it from the element which second pointer is pointing.
+--> increase the value of first pointer by 1 and decrease the value of second pointer by 1.
+--> Traverse until value of first pointer is less than second pointer.
+
+Time Complexity: O(N).
+Code:
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int n = nums.length;
+        int i = 0;
+        int j = n-1;
+        int cnt = 0;
+        while(i<=j){
+            if(nums[j]==val){
+                j--;
+                cnt++;
+                continue;
+            }
+            if(nums[i]==val){
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                cnt++;
+                i++;
+                j--;
+            }
+            else {
+                i++;
+            }
+        }
+        return n-cnt;
+    }
+}
+
+=========================================================
+Question 2.)  Remove Duplicates from Sorted Array: 
