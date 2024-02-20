@@ -40,3 +40,55 @@ class Solution {
 
 =========================================================
 Question 2.)  Remove Duplicates from Sorted Array: 
+URL: https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/ 
+
+Approach:
+1.) Brute-Force:
+--> We can use HashSet since It does not stores the duplicates elements.
+--> We can iterate the array and add elements into HashSet.
+--> Then iterate the HashSet and add those non-repeating elements into that array started from initial location.
+
+Code: 
+class Solution {
+    public int removeDuplicates(int[] nums) {
+         if (nums == null || nums.length == 0) {
+            return 0; // Handle null or empty array
+        }
+        
+        HashSet<Integer> set = new HashSet<>();
+        int j = 0; // Initialize index counter
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (!set.contains(nums[i])) {
+                set.add(nums[i]);
+                nums[j++] = nums[i]; // Overwrite original array with unique elements
+            }
+        }
+        return set.size(); // Return the size of the set
+    }
+}
+
+Time Complexity: O(NlogN)+ O(N).         ( N for iterating array and hashset) and logN for adding elements into HashSet. )
+Space Complexity: O(N) for HashSet.
+
+2.) Optimal:
+Using Two pointer:
+--> We can use two pointers ‘i’ and ‘j’, 
+--> Traverse ‘j’ till we don’t get a number arr[j] which is different from arr[i]. 
+--> Then increase the pointer i and update its value by arr[j].
+
+Code:
+class Solution {
+    public int removeDuplicates(int[] nums) {
+         int i = 0;
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[i] != nums[j]) {
+                i++;
+                nums[i] = nums[j];
+            }
+        }
+        return i + 1;
+    }
+}
+
+Time Complexity: O(N). 
