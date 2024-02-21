@@ -1,0 +1,97 @@
+Question: Trapping Rain Water
+URL: https://leetcode.com/problems/trapping-rain-water/description/ 
+Ans:
+
+M-1) Brute-Force Approach:
+⇒ Go through each index and find the min(max_height of wall towards left, max height of wall towards right) - height of that particular index.
+⇒ After that add all answers for every index.
+
+Time Complexity: O(N*N), Since for each index we are traversing the whole array.
+==============
+M-2) Better Solution:
+⇒ Since we are calculating height for left_max and right_max again and again(for each element)
+That is repetitive work we are doing, So here we’ll try to reduce it. What if we pre-calculate left_max and right_max for each index so that we do not have to go again and again. 
+⇒ We can store it in an array and when needed just take it in O(1) time.
+⇒ Here, we reduced our time complexity O(N*N) to O(N).
+
+Code: 
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+        int trapWater = 0;
+        int [] leftMax = new int[n];
+        int [] rightMax = new int[n];
+        int lMax = height[0];
+        int rMax = height[n-1];
+        leftMax[0]=height[0];
+        rightMax[n-1]=height[n-1];
+        for(int i=1;i<n;i++){
+            if(height[i]>leftMax[i-1]){
+                leftMax[i] = height[i];
+            }
+            else {
+                leftMax[i]=leftMax[i-1];
+            }
+        }
+        for(int i=n-2;i>=0;i--){
+            if(height[i]>rightMax[i+1]){
+                rightMax[i] = height[i];
+            }
+            else {
+                rightMax[i]=rightMax[i+1];
+            }
+        }
+        for(int i=0;i<n;i++){
+            int ans = Math.min(leftMax[i],rightMax[i])-height[i];
+            trapWater+=ans;
+        }
+        return trapWater;
+    }
+}
+Time Complexity: O(3N), one N for traversing the array and other 2N is for computing prefix and suffix.
+Space Complexity: O(2N), one for left_max and other for right_max.
+
+=============
+M-3) Optimal Solution: 
+⇒ Using two pointer approach we can reduce the space complexity.
+==> initialize leftMax = 0, rightMax = 0;
+==> We Create two pointer one pointer(left pointer) pointing to the starting index and other pointer(right pointer) pointing at the last index.
+==> Now, will traverse the array until left pointer is less than or equal to the right pointer.
+==> if height at left pointer less than or equal to the height at right pointer then we check if height of left pointer is greater than or equal to leftMax
+    then update leftMax = height at left pointer. else ( answer = leftMax - height at left pointer ).
+==> then increase the left pointer by 1.
+==> Else(And if) if height at left pointer greater than to the height at right pointer then we check if height of right pointer is greater than or equal RightMax
+    then update rightMax = height at right pointer. else ( answer = RightMax - height at right pointer ).
+==> then decrease the right pointer by 1.
+==> then finally return the answer.
+
+Code:
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+        int l = 0, r = n - 1;
+        int trapWater = 0;
+        int leftMax = 0, rightMax = 0;
+        while (l <= r) {
+            if (height[l] <= height[r]) {
+                if (height[l] >= leftMax) {
+                    leftMax = height[l];
+                } else {
+                    trapWater += leftMax - height[l];
+                }
+                l++;
+            } else {
+                if (height[r] >= rightMax) {
+                    rightMax = height[r];
+                } else {
+                    trapWater += rightMax- height[r];
+                }
+                r--;
+            }
+        }
+        return trapWater;
+    }
+}
+
+Time Complexity: O(N)
+Space Complexity: O(1)
