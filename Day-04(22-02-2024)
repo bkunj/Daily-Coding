@@ -65,8 +65,13 @@ Method-1) Brure-Force Approach:
 Time Complexity: O(N*M), where M =  maxElementInArray.
 
 Method-2)(Optimal) Using Binary Search:
---> We can use Binary search from 1 to maxElementInArray, By considering these numbers are hours from 1 to maxElementInArray.
---> For each hours, traverse the array and compute the hours to eat total bananas.
+piles = [3,6,7,11], h = 8
+Output: 4
+--> For Binary Search we have to define the search space.
+Search Space would be = 1 to maxElementInArray.
+Why 1 to maxElementInArray?==> because in above example is 4 , but it could be 1,2,3....11. not exceet 11 because Koko can eat max to one pile of bananas at one time and that is maximum element of that array.
+--> Now,We can use Binary search from 1 to maxElementInArray. and minimum/initial hour = 1
+--> For each mid, traverse the array and compute the hoursSum to eat total bananas.
 --> If hours is greater than the given hours then traverse again.
 --> Traverse until we find the first hours==given hour, then stop==> because if minimum hours satisfy the condition then after that also satisfies the condition as well.
 
