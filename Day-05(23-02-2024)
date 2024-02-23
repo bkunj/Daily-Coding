@@ -65,7 +65,9 @@ Question 2.) Two Sum II - Input Array Is Sorted
 URL: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/ 
 
 Ans:
---> This question is the extended version of above problem. so no need to brute-force method here.
+--> This question is the extended version of above problem. 
+--> Brute-Force Method is almost same as the above questions.
+
 Optimal Method:(Using Two Pointer)
 Since the array is sorted, we can make some general observations:
 Smaller sums would come from the left half of the array
