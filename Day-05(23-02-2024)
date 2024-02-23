@@ -1,0 +1,90 @@
+Qestion 1: Two Sum: 
+URL: https://leetcode.com/problems/two-sum/description/ 
+Ans:
+1.) Brute-Force Method:
+--> For every element traverse the array and check for the sum. 
+--> If sum matches then returns.
+
+Time Complexity: O(N*N)
+------------------------------------
+2.) Optimized Brute-Force Method:
+--> Let's say if we are ith index and according to Brute-Force we have to traverse the whole array.
+--> But since we have checked till (i-1) index already, so there is no point to traverse that again.
+--> So, for inner loop it is better to start the interation from (i+1)th index.
+==> Here, Time complexity is still in the range of O(N*N), but lesser than the first Brute-Force method.
+------------------------------------
+3.) Optimal Approach:(Using Hashing)
+--> Let's say we are at index i, so we know the one element  = arr[i].
+--> Now, Second element would be = Sum - arr[i].
+--> So, By any how if we find the second element our work is done. ====> Bingo!
+--> But How?
+==> We see in brute-force method that for second element we are traversing the whole array again and again. What If we could pre-compute this second element, so that we do not need to traverse again and again.
+     Whenever needed we just have to take it.
+==> Here comes the concept of Hashing.
+--> SO, we use Map data structue to store the elements. ==> HashMap of (key,value) pair. here, element=key and index=Value.
+
+Time Complexity: O(Nlog(N)).
+Space Complexity: O(N).
+
+CODE:
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer,Integer> mp = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            int n = target - nums[i];
+            if(mp.containsKey(n)) return new int[]{mp.get(n),i};
+            else {
+                mp.put(nums[i],i);
+            }
+        }
+        return new int[]{-1,-1};
+    }
+}
+
+--------------------------------------------
+4.) Optimal Approach: (Using Two Pointer)/(Greedy Approach)
+--> This approach is slightly better than the previous approach if in the question only ask to return the "YES" or "NO".
+
+CODE:
+public static String twoSum(int n, int []arr, int target) {
+        Arrays.sort(arr);
+        int left = 0, right = n - 1;
+        while (left < right) {
+            int sum = arr[left] + arr[right];
+            if (sum == target) {
+                return "YES";
+            } else if (sum < target) left++;
+            else right--;
+        }
+        return "NO";
+    }
+
+Time Complexity: O(Nlog(N))
+==================================================================================================================
+Question 2.) Two Sum II - Input Array Is Sorted
+URL: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/ 
+
+Ans:
+--> This question is the extended version of above problem. so no need to brute-force method here.
+Optimal Method:(Using Two Pointer)
+Since the array is sorted, we can make some general observations:
+Smaller sums would come from the left half of the array
+Larger sums would come from the right half of the array
+
+Time complexity:O(N)
+Space complexity:O(1)
+
+CODE:
+class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+         int left = 0, right = numbers.length - 1;
+        while (left < right) {
+            int sum = numbers[left] + numbers[right];
+            if (sum == target) {
+                return new int[]{left+1,right+1};
+            } else if (sum < target) left++;
+            else right--;
+        }
+        return new int[]{-1,-1};
+    }
+}
