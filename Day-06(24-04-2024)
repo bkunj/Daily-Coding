@@ -1,0 +1,67 @@
+Question 1: Number of subarrays having sum exactly equal to k
+URL:
+https://www.geeksforgeeks.org/number-subarrays-sum-exactly-equal-k/ 
+https://leetcode.com/problems/subarray-sum-equals-k/description/ 
+
+Ans:
+Brute-Force Method:
+--> traverse all the subarrays and calculate their sum. 
+--> If the sum is equal to the required sum, then increment the count of subarrays. 
+--> Return the count.
+pseudo code:
+// calculate all subarrays
+        for (int i = 0; i < n; i++) {
+            int sum = 0;
+            for (int j = i; j < n; j++) {
+                // calculate required sum
+                sum += arr[j];
+                // check if sum is equal to required sum
+                if (sum == k)
+                    res++;
+            }
+        }
+
+Time Complexity: O(N*N)
+Space Complexity: O(1)
+==========================
+Optimal Solution: Using Hash Map
+Hints to solve the problem:
+--> Before this we have to understand one concept that we are going to use in this question.
+Concept: Let's say we have a rope of length L. Now, we cut the rope of length K. 
+         Then the remaining length would be = (L-K).
+Now, To solve the problem-->Assume a array of length N. 
+--> Assume Sum from 0th index to ith index  = L. (Prefix Sum of ith index.)
+--> And we have given the sum = K.
+--> Now, the remaining sum must be  = (L-K).
+--> Now if remaining sum not present in then the subarray of sum K is not present in the Array.
+--> Now the question is how to find the remaining sum ==> Here it comes Hash Map Concept ==> Bingo!
+--> Remaining sum is nothing but prefix sum till (i-1)th index.
+--> We traverse the array and calculate the sum from 0th to ith index and stores into the Hash Map in <Sum,Count> form.
+--> Here, count represent how many times the remaining sum is coming.
+
+==> Advice : First do not jump direct to code==> try to code by yourself and then check the solution.
+
+CODE:
+------
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        Map<Integer, Integer> mp = new HashMap<>();
+        int sum = 0;
+        int count = 0;
+        int i = 0;
+
+        while (i < nums.length) {
+            sum = sum + nums[i];
+            int rem = sum - k;
+            if(sum==k) count++;
+            count = count + mp.getOrDefault(rem, 0);
+            mp.put(sum, mp.getOrDefault(sum, 0) + 1);
+            i++;
+        }
+
+        return count;
+    }
+}
+
+Time Complexity: O(n) 
+Auxiliary Space: O(n)
