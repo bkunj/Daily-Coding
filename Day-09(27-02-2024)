@@ -1,0 +1,94 @@
+Question 1: Rotate Array
+URL: https://leetcode.com/problems/rotate-array/description/?envType=study-plan-v2&envId=top-interview-150
+
+Ans:
+Rotate array by right.
+M-1) Brute-Force Method: 
+--> create an array of size k and put last k elements into that arrar.
+--> adjust n-k elements into right side of original array;
+--> Now put k elements at first K positions in original array.
+
+Time Complexity: O(N+K)
+Space Complexity: O(K)
+---------------
+M-2) Optimal Approach:
+Example:-1234567 ,k=3
+1.first reverse the numbers form index 0 to n-k;
+->4321 567
+2.reverse the k elements from the last
+->4321 765
+3.now reverse the whole nums;
+->5671234 Done Answer is here !!!!
+
+Time complexity: O(N)
+Space complexity: O(1)
+
+CODE:
+class Solution {
+
+  public static void reverse(int nums[], int i, int j){
+        int li = i;
+        int ri = j;
+        
+        while(li < ri){
+            int temp = nums[li];
+            nums[li] = nums[ri];
+            nums[ri] = temp;
+            
+            li++;
+            ri--;
+        }
+    }
+    public void rotate(int[] nums, int k) {
+        k = k % nums.length; 
+        if(k < 0){ 
+            k += nums.length;
+        }
+        reverse(nums, 0, nums.length - k - 1);
+        reverse(nums, nums.length - k, nums.length - 1);
+        reverse(nums, 0, nums.length - 1);
+    }
+}
+
+=================================================================================================================================================
+Question 2:  Remove Duplicates from Sorted Array II
+URL: https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/?envType=study-plan-v2&envId=top-interview-150 
+
+Ans: 
+Brute-Force Method: Using Hashing:
+--> compute frequency of each elements and stores in map.
+--> then put elements into sequence order inside array not only 2 or less than 2 times.
+ Time: O(N)
+Space: O(N)
+
+--------
+Optimal Method:
+Initialize idx = 1 as the first element is always unique and dup = 1 for checking number of duplicate encountered so far.
+Iterate through the array from 1st index and check if the current element is equal to the previous one.
+If equal then increment the duplicate count (dup).
+If not equal reset the duplicate count to 1.
+Since only 2 duplicates are allowed so the dup count should always be less than 3 or less than equal to 2.
+If the dup count is less than 3
+update the array by placing the current element at the current index i.e nums[idx]=nums[i];
+increament the idx by 1.
+Now idx will hold the length of final changed array having atmost 2 duplicates.
+
+Time complexity:O(n)
+Space complexity:O(1)
+
+CODE:
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int i =0;
+        // int ele= nums[0];
+        for(int ele : nums)
+        {
+            if(i==0 || i==1 || nums[i-2] != ele)
+            {
+                nums[i] = ele;
+                i++;
+            }
+        }
+    return i ;
+    }
+}
