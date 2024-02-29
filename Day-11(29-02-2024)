@@ -3,6 +3,10 @@ Depth First Search (DFS):  Three Types
 Inorder Traversal  (Left Root Right)  → https://leetcode.com/problems/binary-tree-inorder-traversal/description/
 Pre-Order Traversal (Root Left Right) → https://leetcode.com/problems/binary-tree-preorder-traversal/description/
 Post-Order Traversal (Left Right Root) → https://leetcode.com/problems/binary-tree-postorder-traversal/description/
+
+1️⃣ Inorder Traversal (Left Root Right): This traversal visits the left subtree, then the root, and finally the right subtree. You can find the problem to practice this traversal here.
+2️⃣ Pre-Order Traversal (Root Left Right): This traversal starts at the root, then visits the left subtree, and finally the right subtree. You can find the problem to practice this traversal here.
+3️⃣ Post-Order Traversal (Left Right Root): This traversal visits the left subtree, then the right subtree, and finally the root. You can find the problem to practice this traversal here.
 =================================================================
 Pre-Order Traversal Using Recursive:
 /**
