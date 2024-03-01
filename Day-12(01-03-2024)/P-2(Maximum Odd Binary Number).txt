@@ -1,0 +1,99 @@
+Problem-02: Maximum Odd Binary Number
+URL: https://leetcode.com/problems/maximum-odd-binary-number/description/
+
+ANS:
+Approach 1
+Lets work with examples :)
+            s = "0101"
+lets sort it in a way that all 1's will be in front and 0's at last.
+            s = "1100"
+Since we have to return greatest odd number, there should be 
+atleast one 1 at the end, so lets just swap only one 1 at the last.
+But the catch is which 1 should we actually swap.
+Lets find it out:
+Lets swap with the first positioned 1 in the string.
+            s = "1100"  =>  s = "0101"
+Lets just try once more to swap it with the last positioned 
+1 we have.
+            s = "1100" =>  s = "1001"
+Here we goooo, 
+if we swapped with the last positioned 1 we are getting 
+the greatest odd number.
+Even if we had only one 1, this logic will still give desired output.
+
+
+Time complexity: O(nlogn)
+
+Space complexity: O(N)
+
+Code: 
+import java.util.Arrays;
+
+class Solution {
+    public String maximumOddBinaryNumber(String s) {
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        for (int i = chars.length - 1; i >= 0; i--) {
+            if (chars[i] == '1') {
+                char temp = chars[i];
+                chars[i] = chars[chars.length - 1];
+                chars[chars.length - 1] = temp;
+                break;
+            }
+        }
+        return new String(chars);
+    }
+}
+
+==================================================
+Approach 2
+
+            s = "010110"
+Lets just count no. of 1's and 0's.
+            cnt1 = 3 and cnt0 = 3
+Since we need greatest odd number we obviously need one 1 
+at the last to make it odd and best chances to make it greatest 
+is by putting rest every 1's at the front.
+
+            ans = "11" + "000" + "1"
+
+            ans = "110001"
+
+Time Complexity: O(N)
+Space Complexity: O(N) only to store answer, other wise O(1).
+
+Code:
+class Solution {
+    public String maximumOddBinaryNumber(String s) {
+        int n=s.length();
+        String ans = "1";
+        int cnt = 0;
+        for(char ch:s.toCharArray()){
+            if(ch=='1') {
+                cnt++;
+            }
+        }
+        for(int i=0;i<n-cnt;i++){
+            ans = "0" + ans;
+        }
+        for(int i=1;i<cnt;i++){
+            ans = "1"+ ans;
+        }
+        return ans;
+    }
+}
+----------------
+class Solution {
+    public String maximumOddBinaryNumber(String s) {
+        int cnt1 = 0, cnt0 = 0;
+        for (char a : s.toCharArray()) {
+            if (a == '1') cnt1++;
+            else if (a == '0') cnt0++;
+        }
+        StringBuilder ans = new StringBuilder();
+        ans.append("1".repeat(cnt1 - 1));
+        ans.append("0".repeat(cnt0));
+        ans.append("1");
+        return ans.toString();
+    }
+}
