@@ -1,0 +1,72 @@
+Squares of a Sorted Array
+Link: https://leetcode.com/problems/squares-of-a-sorted-array/description/ 
+
+Solution: 
+
+Brute Force = Square it and Sort it. 
+T.c = O(NlogN)
+=========================================================
+M-2) 
+
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int cnt = 0;
+        int i=0;
+        int n=nums.length;
+        while(i<n){
+            if(nums[i]<0) cnt++;
+            else break;
+            i++;
+        }
+        for(int it=0;it<n;it++){
+            nums[it]=nums[it]*nums[it];
+        }
+        if(cnt==0) return nums;
+        for(int ip=0;ip<cnt/2;ip++){
+            int temp = nums[cnt-1-ip];
+            nums[cnt-1-ip]=nums[ip];
+            nums[ip]=temp;
+        }
+        int k= cnt;
+        while(k<n){
+            if(k==0) k++;
+            if(nums[k-1]>nums[k]){
+                int temp=nums[k];
+                nums[k]=nums[k-1];
+                nums[k-1]=temp;
+                k--;
+            }
+            else if(nums[k-1]<=nums[k]){
+                k++;
+            }
+        }
+        return nums;
+    }
+}
+
+T.C = O(N)
+S.C = O(1)
+
+========================================
+M-3) Using 2 pointer.
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        int start = 0, end = n - 1;
+        for (int i = n - 1; i >= 0; i--) {
+            if (Math.abs(nums[start]) >= Math.abs(nums[end])) {
+                ans[i] = nums[start] * nums[start];
+                start++;
+            } else {
+                ans[i] = nums[end] * nums[end];
+                end--;
+            }
+        }
+        return ans;
+    }
+}
+
+T.C = O(N)
+S.C = O(N) to store the answer. else O(1).
+======================================================

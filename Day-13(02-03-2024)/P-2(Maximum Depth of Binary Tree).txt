@@ -1,0 +1,39 @@
+Maximum depth of Binary Tree
+URL: https://leetcode.com/problems/maximum-depth-of-binary-tree/description/ 
+
+Solutions:
+
+Using Recursion:
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root==null) return 0;
+      int left = maxDepth(root.left);
+      int right=maxDepth(root.right);
+        return Math.max(left,right)+1;
+    }
+}
+========================================================================
+Using Iteration:
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        int maxDepth = 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        if(root==null){
+            return maxDepth;
+        }
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int n = queue.size();
+            for(int i=0;i<n;i++){
+                if(queue.peek().left!=null) queue.offer(queue.peek().left);
+                if(queue.peek().right!=null) queue.offer(queue.peek().right);
+                queue.poll();
+            }
+            maxDepth++;
+        }
+        return maxDepth;
+    }
+}
