@@ -1,0 +1,33 @@
+Q.) Remove Nth Node From End of List
+Link: https://leetcode.com/problems/remove-nth-node-from-end-of-list/description/ 
+
+Answer: 
+M-1) Traverse two times → first for find length of list and then traverse again for length-n;
+T.C = O(2N)
+M-2) Only one pass: (slow and fast pointer)
+--> initially slow and fast pointer points to head.
+--> then first till n move fast pointer first.
+--> then move both pointer slow and fast until fast->next != null.
+--> Automatically slow pointer reach to the destination.
+Code:
+
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode slowPointer = head;
+        ListNode fastPointer = head;
+        while(n-- > 0){
+            fastPointer = fastPointer.next;
+        }
+        if(fastPointer==null){
+            return head.next;
+        }
+        while(fastPointer.next!=null){
+            slowPointer = slowPointer.next;
+            fastPointer = fastPointer.next;
+        }
+        slowPointer.next = slowPointer.next.next;
+        return head;
+    }
+}
+T.C = O(N).
+================================================================
