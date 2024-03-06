@@ -1,0 +1,35 @@
+Q.) Linked List Cycle II
+Link: https://leetcode.com/problems/linked-list-cycle-ii/description/ 
+Solution: 
+M-1) Using Hashing
+Time Complexity: (N)
+Space Complexity: O(N)
+
+=====
+M-2) Floyd’s Cycle finding Algorithm:
+Time Complexity: O(N), Space Complexity: O(1)
+
+CODE:
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+
+        while (fast!=null && fast.next!=null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                slow = head;
+                while(slow!=fast){
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow;
+            }
+        }
+
+
+        return null;
+    }
+}

@@ -1,0 +1,37 @@
+Q.) Linked List Cycle
+Link: https://leetcode.com/problems/linked-list-cycle/description/ 
+Solution: 
+M-1) Brute-Force Method:
+→ Traverse a linked list.
+→ create a HashMap to store the presence of an element one time.
+→ If any element occurs twice → means there is a cycle in linked list.
+
+Time Complexity: O(N)
+Space Complexity: O(N) 
+===========
+M-2) Using Floyd’s Cycle Finding Algorithm:
+→ As discussed above .
+
+Time Complexity: O(N), Space Complexity: O(1)
+CODE:
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        // Step 2: Traverse the linked list
+        // with the slow and fast pointers
+        while (fast != null && fast.next != null) {
+            // Move slow one step
+            slow = slow.next;
+            // Move fast two steps
+            fast = fast.next.next;
+            // Check if slow and fast pointers meet
+            if (slow == fast) {
+                return true;  // Loop detected
+            }
+        }
+        // If fast reaches the end of the
+        // list, there is no loop
+        return false;
+    }
+}
