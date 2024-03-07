@@ -1,0 +1,43 @@
+Q.) Delete the Middle Node of a Linked List
+Link: https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/description/ 
+Solution:
+
+M-1) 
+--> First traverse the linked list and find the length of linked list.
+--> Then traverse till n/2-1 and then connect that node to n/2+1 th node.
+--> delete n/2th node.
+--> return head.
+Time Complexity: O(2N)
+
+------------------
+M-2) In one Pass: Using two pointer
+--> Create slow and fast pointer pointing to head initially.
+--> move slow pointer by 1 and fast pointer by 2.
+--> when fast pointer reaches last element , automatically slow pointer reaches at middle element.
+
+CODE:
+
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        if(fast.next==null) return null;
+        if(fast.next.next==null) {
+            fast.next=null;
+            return head;
+        }
+        while(fast.next.next.next!=null && fast.next.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(fast.next.next==null ) break;
+        }
+        slow.next = slow.next.next;
+        ListNode t = slow.next.next;
+        t = null;
+        return head;
+    }
+}
+
+Time Complexity: O(N).
+
+
