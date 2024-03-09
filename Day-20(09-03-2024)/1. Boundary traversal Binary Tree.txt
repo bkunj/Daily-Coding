@@ -1,0 +1,79 @@
+Q.) Boundary Traversal Of a Binary Tree( Anti-Clock wise)
+Link: https://www.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1 
+
+Input:
+        1 
+      /   \
+     2     3  
+    / \   / \ 
+   4   5 6   7
+      / \
+     8   9
+   
+Output: 1 2 4 8 9 6 7 3
+--------
+Boundary traversal of a binary tree involves visiting the boundary nodes of the tree in a particular order. These boundary nodes include the left boundary, the leaf nodes from left to right, and the right boundary (excluding the root node if it's also a leaf node). The order of traversal typically follows a specific pattern to ensure that all boundary nodes are visited.
+
+Here's how you can implement the boundary traversal of a binary tree in Java:
+
+Left Boundary Traversal: Traverse from the root node to the leftmost leaf node, visiting each node along the path. This includes all the left children of the root node until a leaf node is reached.
+
+Leaf Node Traversal: Traverse the tree to visit all the leaf nodes from left to right.
+
+Right Boundary Traversal: Traverse from the rightmost leaf node to the root node, visiting each node along the path. This includes all the right children of the root node until a leaf node is reached.
+
+Combine the results of the left boundary traversal, leaf node traversal, and right boundary traversal to obtain the boundary traversal of the binary tree.
+
+CODE:
+class Solution
+{
+    public static Boolean isLeaf(Node root) {
+        return (root.left == null) && (root.right == null);
+    }
+
+    public static void addLeftBoundary(Node root, ArrayList < Integer > res) {
+        Node cur = root.left;
+        while (cur != null) {
+            if (isLeaf(cur) == false) res.add(cur.data);
+            if (cur.left != null) cur = cur.left;
+            else cur = cur.right;
+        }
+    }
+    public static void addRightBoundary(Node root, ArrayList < Integer > res) {
+        Node cur = root.right;
+        ArrayList < Integer > tmp = new ArrayList < Integer > ();
+        while (cur != null) {
+            if (isLeaf(cur) == false) tmp.add(cur.data);
+            if (cur.right != null) cur = cur.right;
+            else cur = cur.left;
+        }
+        int i;
+        for (i = tmp.size() - 1; i >= 0; --i) {
+            res.add(tmp.get(i));
+        }
+    }
+    public static void addLeaves(Node root, ArrayList < Integer > res) {
+        if (isLeaf(root)) {
+            res.add(root.data);
+            return;
+        }
+        if (root.left != null) addLeaves(root.left, res);
+        if (root.right != null) addLeaves(root.right, res);
+    }
+    
+	ArrayList <Integer> boundary(Node node)
+	{
+	    ArrayList < Integer > ans = new ArrayList < Integer > ();
+        if (isLeaf(node) == false) ans.add(node.data);
+        addLeftBoundary(node, ans);
+        addLeaves(node, ans);
+        addRightBoundary(node, ans);
+        return ans;
+	}
+}
+
+=================
+
+T.C = O(N) Reason: O(H) + O(H) + O(N) which is ≈ O(N),
+S.C = O(N). Space is needed for the recursion stack while adding leaves. In the worst case (skewed tree).
+
