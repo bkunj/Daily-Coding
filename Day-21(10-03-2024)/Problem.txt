@@ -1,0 +1,70 @@
+Q.) Find the Largest Area of Square Inside Two Rectangles
+Link: https://leetcode.com/contest/weekly-contest-386/problems/find-the-largest-area-of-square-inside-two-rectangles/ 
+
+To solve this problem, we can iterate through each pair of rectangles and check if they intersect. If they do, we can calculate the area of the square formed by their intersection. We then return the maximum area found among all possible intersections.
+CODE:
+import java.util.Scanner;
+
+public class Solution {
+    public int largestSquareArea(int[][] bottomLeft, int[][] topRight) {
+        int maxArea = 0;
+        // Iterate through each pair of rectangles
+        for (int i = 0; i < bottomLeft.length; i++) {
+            for (int j = i + 1; j < bottomLeft.length; j++) {
+                // Calculate the intersection coordinates
+                int[] intersectionBottomLeft = {
+                    Math.max(bottomLeft[i][0], bottomLeft[j][0]),
+                    Math.max(bottomLeft[i][1], bottomLeft[j][1])
+                };
+                int[] intersectionTopRight = {
+                    Math.min(topRight[i][0], topRight[j][0]),
+                    Math.min(topRight[i][1], topRight[j][1])
+                };
+                
+                // Check if the intersection is valid (non-negative area)
+                if (intersectionBottomLeft[0] < intersectionTopRight[0] &&
+                    intersectionBottomLeft[1] < intersectionTopRight[1]) {
+                    // Calculate the side length of the square formed by the intersection
+                    int sideLength = Math.min(
+                        intersectionTopRight[0] - intersectionBottomLeft[0],
+                        intersectionTopRight[1] - intersectionBottomLeft[1]
+                    );
+                    
+                    // Update the maximum area if necessary
+                    maxArea = Math.max(maxArea, sideLength * sideLength);
+                }
+            }
+        }
+        
+        return maxArea;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input for n = 4
+        int n = 4;
+        int[][] bottomLeft = new int[n][2];
+        int[][] topRight = new int[n][2];
+
+        System.out.println("Enter bottom-left coordinates:");
+        for (int i = 0; i < n; i++) {
+            bottomLeft[i][0] = scanner.nextInt();
+            bottomLeft[i][1] = scanner.nextInt();
+        }
+
+        System.out.println("Enter top-right coordinates:");
+        for (int i = 0; i < n; i++) {
+            topRight[i][0] = scanner.nextInt();
+            topRight[i][1] = scanner.nextInt();
+        }
+
+        Solution solution = new Solution();
+        System.out.println(solution.largestSquareArea(bottomLeft, topRight));
+
+        scanner.close();
+    }
+}
+
+
+Time Complexity:O(N*N)
