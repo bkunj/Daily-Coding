@@ -1,0 +1,74 @@
+Q.) 791. Custom Sort String
+Link: https://leetcode.com/problems/custom-sort-string/description/ 
+
+Solution:
+Intuition
+It is known that every permuted string is just rearrangement of the the string.
+Count the frequencies in the string s, follow the order to rearrange the s.
+
+Approach
+Use a boolean array or bitset to see which alphabet is given in order
+Use freq to store the frequencies of each alphabet in the string s, and if the alphabet c is not in order set ans=ans+c.
+Rearrange the string ans by order.
+2nd approach uses bit mask for handling to see which alphabet is given in order which is also fast & efficient.
+
+Complexity
+Time complexity: O(|order|+|s|)
+Space complexity:O(26)
+
+class Solution {
+    public String customSortString(String order, String s) {
+        int[] freq = new int[26];
+        boolean[] used = new boolean[26];
+        StringBuilder ans = new StringBuilder();
+
+        // Mark characters in 'order' as used
+        for (char c : order.toCharArray()) {
+            used[c - 'a'] = true;
+        }
+
+        // Count frequencies of characters in 's' and append unused characters to 'ans'
+        for (char c : s.toCharArray()) {
+            freq[c - 'a']++;
+            if (!used[c - 'a']) {
+                ans.append(c);
+            }
+        }
+
+        // Append characters in 'order' according to their frequencies in 's'
+        for (char c : order.toCharArray()) {
+            ans.append(String.valueOf(c).repeat(Math.max(0, freq[c - 'a'])));
+        }
+
+        return ans.toString();
+    }
+}
+
+
+class Solution {
+    public String customSortString(String order, String s) {
+        int[] freq = new int[26];
+        int used = 0;
+
+
+        // Mark characters in 'order' as used
+        for (char c : order.toCharArray()) {
+            used |= (1 << (c - 'a'));
+        }
+        StringBuilder ans = new StringBuilder();
+        // Count frequencies of characters in 's' and append unused characters to 'ans'
+        for (char c : s.toCharArray()) {
+            freq[c - 'a']++;
+            if (((used >> (c - 'a')) & 1) == 0) {
+                ans.append(c);
+            }
+        }
+        // Append characters in 'order' according to their frequencies in 's'
+        for (char c : order.toCharArray()) {
+            ans.append(String.valueOf(c).repeat(freq[c - 'a']));
+        }
+
+
+        return ans.toString();
+    }
+}
