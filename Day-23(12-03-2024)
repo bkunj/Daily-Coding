@@ -1,0 +1,78 @@
+Q.) 1171. Remove Zero Sum Consecutive Nodes from Linked List
+Link: https://leetcode.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list/description/ 
+Solution:
+Hint: To solve this problem using a single loop, you can utilize a HashMap to keep track of the cumulative sum encountered so far along with the corresponding node.
+CODE:
+
+public class Solution {
+    public ListNode removeZeroSumSublists(ListNode head) {
+        int prefixSum = 0;
+        Map<Integer, ListNode> map = new HashMap<>();
+       
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        map.put(0, dummy);
+       
+        while (head != null) {
+            prefixSum += head.val;
+           
+            if (map.containsKey(prefixSum)) {
+                ListNode p = map.get(prefixSum);
+                ListNode start = p;
+                int pSum = prefixSum;
+               
+                while (start != head) {
+                    start = start.next;
+                    pSum += start.val;
+                    if (start != head) {
+                        map.remove(pSum);
+                    }
+                }
+               
+                p.next = start.next;
+               
+            } else {
+                map.put(prefixSum, head);
+            }
+           
+            head = head.next;
+        }
+       
+        return dummy.next;
+    }
+}
+=================================================================================
+
+class Solution {
+    public ListNode removeZeroSumSublists(ListNode head) {
+        LinkedHashMap<Integer, ListNode> map = new LinkedHashMap<>();
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode curr = dummy;
+        int sum = 0;
+        
+        while (curr != null) {
+            sum += curr.val;
+            map.put(sum, curr);
+            curr = curr.next;
+        }
+        
+        sum = 0;
+        curr = dummy;
+        while (curr != null) {
+            sum += curr.val;
+            curr.next = map.get(sum).next;
+            curr = curr.next;
+        }
+        
+        return dummy.next;
+    }
+}
+Time Complexity:
+First Loop (Insertion into LinkedHashMap):
+The time complexity of this loop is O(n), where n is the number of nodes in the linked list.
+Second Loop (Adjusting Next Pointers):
+The time complexity of this loop is also O(n), where n is the number of nodes in the linked list.
+Overall:
+Time Complexity: O(n), where n is the number of nodes in the linked list.
+Space Complexity: O(n), where n is the number of nodes in the linked list.
