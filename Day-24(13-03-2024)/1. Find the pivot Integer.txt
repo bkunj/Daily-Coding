@@ -1,0 +1,26 @@
+Q.) 2485. Find the Pivot Integer
+URL: https://leetcode.com/problems/find-the-pivot-integer/description/ 
+
+Solution: 
+ M-1) Brute Force:
+--> We can use two-pointer approach to solve this question.
+--> For that we need to traverse from 1 to X and N to X.
+
+Time Complexity: O(N)
+Space Complexity: O(1)
+
+====================================================================
+M-2) Optimal Approach:
+ --> Basic Mathematics calculation.
+Calculate the sum of integers.
+1 to x = x(x+1)/2
+x to n = (1 to n) - (1 to (x-1))
+Equating both we get, x^2= n(n+1)/2. --> Now we need to calculate the value of X.
+Assume Sum = (Sqrt)n(n+1)/2.
+If difference between celing value of Sum and Sum == 0. Then ans would be Sum.
+--> Else return -1.
+
+Time Complexity: O(1).
+Space Complexity: O(1).
+
+=====================================================================

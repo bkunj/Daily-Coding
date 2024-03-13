@@ -1,0 +1,16 @@
+Q.2) 319. Bulb Switcher
+Link: https://leetcode.com/problems/bulb-switcher/description/ 
+Solution:
+
+Here, we have to check for multiple test cases to get the pattern.
+So, By checking multiple test cases, I observe that the answer would be 
+the ceiling value of the square root of N.
+
+Time Complexity: O(1)
+Space Complexity: O(1).
+CODE:
+class Solution {
+    public int bulbSwitch(int n) {
+        return (int)Math.sqrt(n);
+    }
+}
