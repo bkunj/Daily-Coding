@@ -1,0 +1,59 @@
+Q.) 930. Binary Subarrays With Sum 
+Link: https://leetcode.com/problems/binary-subarrays-with-sum/description/ 
+Solution:
+Brute-Force:
+--> We can generate all the subarrays and compare them with goal.
+Time Complexity: O(N*N)
+Space Complexity: O(1)
+================
+Better Approach: Using Prefix sum and Hashing:
+CODE:
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        Map<Integer, Integer> mp = new HashMap<>();
+        int sum = 0;
+        int count = 0;
+        int i = 0;
+        while (i < nums.length) {
+            sum = sum + nums[i];
+            int rem = sum - goal;
+            if(sum==goal) count++;
+            count = count + mp.getOrDefault(rem, 0);
+            mp.put(sum, mp.getOrDefault(sum, 0) + 1);
+            i++;
+        }
+        return count;
+    }
+}
+Time Complexity: O(N)
+Space Complexity: O(1)
+
+=======================
+Optimal Approach: (Using Sliding Window) 
+--> Here, Normal sliding windows fail.
+
+--> So we use the concept which is ? exact(N) = atMost(N) - atMost(N-1).
+
+--> The solution employs a helper function atMost(nums, goal) to find the number of subarrays with sum at most equal to goal. The numSubarraysWithSum function returns the difference between atMost(nums, goal) and atMost(nums, goal - 1), effectively finding the number of subarrays with sum exactly equal to goal.
+
+
+CODE:
+class Solution {
+    private int atMost(int[] nums, int goal){
+        int fast,slow = 0, sum = 0, ans = 0;
+        for(fast=0;fast<nums.length;fast++){
+            sum+=nums[fast];
+            while(sum>goal && slow<=fast){
+                sum-=nums[slow];
+                slow++;
+            }
+            ans+=fast-slow+1;
+        }
+        return ans;
+    }
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        return atMost(nums,goal) - atMost(nums,goal-1);
+    }
+}
+
+Time Complexity: O(N), Space Complexity: O(1)
