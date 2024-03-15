@@ -1,0 +1,101 @@
+Q.) 238. Product of Array Except Self
+Link: https://leetcode.com/problems/product-of-array-except-self/description/ 
+Solution: 
+M-1) Brute Force:
+→ For each element, compute the product except self using two loops.
+Time Complexity: O(N*N)
+Space Complexity: O(1)
+========================= 
+Using Division Operator:
+================
+M-2)
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int multi = 1;
+        int countZeroes = 0;
+        int[] ans = new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==0) {
+                countZeroes++;
+                continue;
+            }
+            multi*=nums[i];
+        }
+        if(countZeroes==0){
+            for(int j=0;j<nums.length;j++){
+            ans[j] = multi/nums[j];
+            }
+        }
+        else if(countZeroes==1){
+            for(int k=0;k<nums.length;k++){
+                if(nums[k]==0) ans[k]=multi;
+                else ans[k] = 0;
+             }
+        }
+        else{
+            for(int l=0;l<nums.length;l++){
+            ans[l] = 0;
+            }
+        }
+        return ans;
+    }
+}
+Time Complexity: O(2N).
+Space Complexity: O(1).
+===============================================================
+Without Using Division Operator:
+================
+M-3) Using Prefix product and suffix product:
+
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] leftProducts = new int[n];
+        int[] rightProducts = new int[n];
+        int[] result = new int[n];
+        // Calculate left products
+        leftProducts[0] = 1;
+        for (int i = 1; i < n; i++) {
+            leftProducts[i] = leftProducts[i - 1] * nums[i - 1];
+        }
+        // Calculate right products
+        rightProducts[n - 1] = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            rightProducts[i] = rightProducts[i + 1] * nums[i + 1];
+        }
+        // Calculate the final result
+        for (int i = 0; i < n; i++) {
+            result[i] = leftProducts[i] * rightProducts[i];
+        }
+        return result;
+    }
+}
+Time Complexity: O(3N)
+Space Complexity: O(2N)
+=======================
+M-4) Optimal (Modified version of M-3 )
+=====
+Instead of using two separate arrays to store left and right products, we can optimize the solution to use constant space by calculating the left and right products simultaneously and directly updating the result array.
+CODE:
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] result = new int[n];
+        // Calculate left products and store them in result array
+        result[0] = 1;
+        for (int i = 1; i < n; i++) {
+            result[i] = result[i - 1] * nums[i - 1];
+        }
+        // Calculate right products and update result array with final result
+        int rightProduct = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            result[i]*=rightProduct;
+            rightProduct*=nums[i];
+        }
+        return result;
+    }
+}
+
+Time Complexity: O(N)
+Space Complexity: O(1)
