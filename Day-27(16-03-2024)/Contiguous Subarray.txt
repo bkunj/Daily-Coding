@@ -1,0 +1,45 @@
+Q.) 525. Contiguous Array
+URL: https://leetcode.com/problems/contiguous-array/description/ 
+
+Solution: 
+--> Assumption: assume 0 as -1, so that if we sum 1+(-1)=0. Now we just have to 
+    find the largest subarray whoose sum=0.
+=========================================
+M-1) M-1) Consider all sub-arrays one by one and check the sum of every sub-array.
+If the sum of the current subarray is equal to zero then update the maximum length accordingly.
+
+T.C = O(N^2) , S.C = O(1).
+
+============================================
+M-2) Using Hashing:
+--> Hint: create one HashMap to store the prefix sum of array.
+
+CODE:
+class Solution {
+    public int findMaxLength(int[] nums) {
+        int sum=0;
+        int maxLength=0;
+        Map<Integer,Integer> mp = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            int temp = nums[i];
+            if(nums[i]==0){
+                temp = -1;
+            }
+            sum+=temp;
+            if(sum==0){
+                maxLength = Math.max(maxLength,i+1);
+            }
+            if(mp.containsKey(sum)){
+                int diff = i-mp.get(sum);
+                maxLength = Math.max(maxLength,diff);
+            }
+            else{
+                mp.put(sum,i);
+            }
+        }
+        return maxLength;
+    }
+}
+
+Time Complexity: O(N)
+Space Complexity: O(N)
