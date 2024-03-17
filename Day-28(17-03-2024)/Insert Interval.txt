@@ -1,0 +1,46 @@
+Q.) 57. Insert Interval:
+Link: https://leetcode.com/problems/insert-interval/description/ 
+Solution: 
+Insert those intervals who are not overlapping and are less than our new Interval
+Now check if our new Interval is overalpping wiht any other interval(s) so either insert if not overlapping or merge if overallping with others
+Now insert those who are left i.e those intervals which are greater than new Interval
+These condtions can easily be checked using a while loop
+For second condition when the inertvals are overlapping we can do that by :
+(a,b) and (c,d) the new interval: [min(a,c),max(b,d)]
+
+CODE:)
+
+import java.util.ArrayList;
+import java.util.Arrays;
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        ArrayList<int[]> ans = new ArrayList<>();
+        int i = 0;
+        int n = intervals.length;
+        // Add intervals before newInterval
+        while (i < n && intervals[i][1] < newInterval[0]) {
+            ans.add(intervals[i]);
+            i++;
+        }
+        // Merge overlapping intervals
+        while (i < n && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+        ans.add(newInterval);
+        // Add intervals after newInterval
+        while (i < n) {
+            ans.add(intervals[i]);
+            i++;
+        }
+        // Convert ArrayList to 2D array
+        int[][] result = new int[ans.size()][2];
+        for (int j = 0; j < ans.size(); j++) {
+            result[j] = ans.get(j);
+        }
+        return result;
+    }
+}
+Time Complexity: O(N), Space Complexity: (N)
+==================================
