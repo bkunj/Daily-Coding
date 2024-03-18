@@ -1,0 +1,72 @@
+Q.) 452. Minimum Number of Arrows to Burst Balloons
+Link: https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/description/ 
+Solution:
+M-1) Brute Force Solution:
+CODE:
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }
+        int arrows = 0;
+        int n = points.length;
+        boolean[] popped = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!popped[i]) {
+                arrows++;
+                int end = points[i][1];
+                for (int j = i + 1; j < n; j++) {
+                    if (!popped[j] && points[j][0] <= end && points[j][1] >= points[i][0]) {
+                        popped[j] = true;
+                        end = Math.min(end, points[j][1]);
+                    }
+                }
+            }
+        }
+        return arrows;
+    }
+}
+
+
+Time Complexity: O(N*N),
+Explanation:
+We iterate through each balloon in the array.
+For each balloon, if it hasn't been popped yet, we increment the arrow count and check if it overlaps with any other balloons.
+If it does overlap with another balloon, we mark that balloon as popped and update the end coordinate.
+We continue this process until all balloons have been checked.
+Finally, we return the total number of arrows needed.
+This brute-force approach has a time complexity of O(n^2), where n is the number of balloons. It checks every possible pair of balloons, making it inefficient for large inputs. However, it provides a simple solution to understand and implement.
+
+=====================
+M-2) Optimal Approach:
+
+CODE:
+import java.util.Arrays;
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }
+        // Sort the balloons by their end coordinates
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1])); // Use Integer.compare to compare end coordinates
+        int arrows = 1;
+        int end = points[0][1];
+        // Shoot an arrow when a balloon cannot be covered by the current arrow
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][0] > end) {
+                arrows++;
+                end = points[i][1];
+            }
+        }
+        return arrows;
+    }
+}
+
+Time Complexity: O(NLog(N)).
+Explanation:
+We sort the balloons based on their end coordinates in ascending order. This helps us to know which balloon ends first.
+We initialize the number of arrows to 1, as we will always need at least one arrow.
+We iterate through the sorted balloons. For each balloon:
+If the start of the balloon is beyond the end of the current arrow's range, we need a new arrow to burst this balloon, so we increment the arrow count and update the end position to the end of the current balloon.
+Finally, we return the total number of arrows needed.
+This solution has a time complexity of O(n log n), where n is the number of balloons, due to the sorting operation. The rest of the operations take linear time, making the overall time complexity dominated by the sorting.
