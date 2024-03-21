@@ -1,0 +1,40 @@
+Q.) 1669. Merge In Between Linked Lists
+Link: https://leetcode.com/problems/merge-in-between-linked-lists/description/ 
+Solution: 
+CODE:
+class Solution {
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        ListNode head = list1;
+        ListNode prevA = null; // To remember the node before the range [a, b]
+        ListNode nextB = null; // To remember the node after the range [a, b]
+        int c = 0;
+        // Traverse list1 to find the nodes at positions a-1 and b+1
+        while (list1 != null) {
+            if (c == a - 1) {
+                prevA = list1;
+            }
+            if (c == b + 1) {
+                nextB = list1;
+                break;
+            }
+            list1 = list1.next;
+            c++;
+        }
+        // Connect the node before range [a, b] to list2
+        if (prevA != null) {
+            prevA.next = list2;
+        }
+        // Traverse to the end of list2
+        ListNode tailList2 = list2;
+        while (tailList2.next != null) {
+            tailList2 = tailList2.next;
+        }
+        // Connect the end of list2 to the node after range [a, b]
+        if (nextB != null) {
+            tailList2.next = nextB;
+        }
+        return head;
+    }
+}
+ 
+Time Complexity : O(M+N)
