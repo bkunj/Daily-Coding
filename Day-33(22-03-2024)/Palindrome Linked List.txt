@@ -1,0 +1,109 @@
+Q.) 234. Palindrome Linked List
+Link: https://leetcode.com/problems/palindrome-linked-list/description/ 
+Solution:
+M-1) Using List:
+→ Copy the data into list and then check.
+CODE:
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        List<Integer> list = new ArrayList();
+        while(head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+        int left = 0;
+        int right = list.size()-1;
+        while(left < right && list.get(left) == list.get(right)) {
+            left++;
+            right--;
+        }
+        return left >= right;
+    }
+}
+
+Time Complexity: O(N), Space Complexity: O(N)
+
+========================================
+M-2) Using Stack:
+→ First push all data in stack, and then traverse linked list and keep popping element from stack one by one, so stack will give you element from last.
+CODE:
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        Stack<Integer> stack = new Stack();
+        ListNode curr = head;
+        while(curr != null) {
+            stack.push(curr.val);
+            curr = curr.next;
+        }
+        curr = head;
+        while(curr != null && curr.val == stack.pop()) {
+            curr = curr.next;
+        }
+        return curr == null;
+    }
+}
+
+Time Complexity: O(N), Space Complexity: O(N)
+
+=================================================
+M-3) Using Recursion:
+CODE:
+class Solution {
+    ListNode curr;
+    public boolean isPalindrome(ListNode head) {
+        curr = head;
+        return solve(head);
+    }
+    public boolean solve(ListNode head) {
+        if(head == null) return true;
+        boolean ans = solve(head.next) && head.val == curr.val;
+        curr = curr.next;
+        return ans;
+    }
+}
+
+Time Complexity: O(N), Space Complexity: O(N)
+==================================
+M-4) Optimal:
+Use two pointer one will move with the speed of 1 and one with the speed of 2, so when the fast pointer reaches the end, slow pointer would be at mid.
+After getting middle node, reverse the list after that node.
+and then compare each element.
+CODE:
+class Solution {
+
+
+    public ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while(curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+
+    public boolean isPalindrome(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode rev = reverse(slow.next); // reverse second list
+        slow.next = null;
+        while(rev != null) {
+            if(head.val != rev.val) {
+                return false;
+            }
+            head = head.next;
+            rev = rev.next;
+        }
+        return true;
+    }
+}
+
+Time Complexity: O(N), Space Complexity: O(1)
+==============================================
