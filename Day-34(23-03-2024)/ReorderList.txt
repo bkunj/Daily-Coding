@@ -1,0 +1,97 @@
+Q.) 143. Reorder List
+Link: https://leetcode.com/problems/reorder-list/description/ 
+Solution: 
+M-1) Using Stack:
+CODE:
+import java.util.*;
+class Solution {
+    public void reorderList(ListNode head) {
+        Stack<ListNode> stack = new Stack<>();
+        ListNode curr = head;
+        while (curr != null) {
+            stack.push(curr);
+            curr = curr.next;
+        }
+        curr = head;
+        Map<ListNode, Boolean> visited = new HashMap<>();
+        while (true) {
+            ListNode last = stack.pop();
+            ListNode next = curr.next;
+            visited.put(curr, true);
+            if (visited.containsKey(last)) {
+                curr.next = null;
+                break;
+            }
+            curr.next = last;
+            visited.put(last, true);
+            curr = curr.next;
+            if (visited.containsKey(next)) {
+                curr.next = null;
+                break;
+            }
+            curr.next = next;
+            curr = curr.next;
+        }
+    }
+}
+
+Time Complexity: O(N), Space Complexity: O(N)
+
+=================================
+M-2) Using slow and fast pointer: Optimal:
+CODE:
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return; // Nothing to reorder if the list is empty or has <= 2 nodes
+        }
+
+
+        // Step 1: Find the middle of the linked list
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+
+        // Step 2: Reverse the second half of the linked list
+        ListNode secondHalf = reverseList(slow.next);
+        slow.next = null; // Break the original list into two parts
+
+
+        // Step 3: Merge the first and reversed second halves alternately
+        ListNode firstHalf = head;
+        while (firstHalf != null && secondHalf != null) {
+            ListNode nextFirst = firstHalf.next;
+            ListNode nextSecond = secondHalf.next;
+
+
+            firstHalf.next = secondHalf;
+            secondHalf.next = nextFirst;
+
+
+            firstHalf = nextFirst;
+            secondHalf = nextSecond;
+        }
+    }
+
+
+    private ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+
+
+        while (current != null) {
+            ListNode nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+
+
+        return prev;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1)
