@@ -1,0 +1,113 @@
+Q.17) 287. Find the Duplicate Number
+Link: https://leetcode.com/problems/find-the-duplicate-number/description/ 
+Solution: 
+M-1) Brute Force (TLE)
+class Solution {
+    public int findDuplicate(int[] nums) {
+        for(int i=0;i<nums.length;i++)
+            for(int j=i+1;j<nums.length;j++)
+                if(nums[i] == nums[j]) return nums[i];
+        return -1;
+    }
+}
+Time Complexity: O(N*N), Space Complexity: O(1)
+================
+M-2) Sort and check the adjacent element:
+class Solution {
+    public int findDuplicate(int[] nums) {
+        Arrays.sort(nums);
+        for(int i=0;i<nums.length-1;i++)
+            if(nums[i] == nums[i+1]) return nums[i];
+        return -1;
+    }
+}
+Time Complexity: O(N*logN), Space Complexity: O(1)
+===============
+M-3) Using Hashing:
+→ We can use HashMap and HashSet to solve this question.
+Using HashSet:
+CODE:
+class Solution {
+    public int findDuplicate(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        set.add(nums[0]);
+        for(int i=1;i<nums.length;i++){
+            if(set.contains(nums[i])) return nums[i];
+            set.add(nums[i]);
+        }
+        return -1;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(N)
+==========
+M-4) Using Boolean Array:
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int n = nums.length;
+        boolean[] set = new boolean[n+1];
+        for(int i=0;i<n;i++) {
+            if(set[nums[i]]) return nums[i];
+            set[nums[i]] = true;
+        }
+        return -1;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(N)
+==========
+M-5) Optimal Solution: Mark Visited Element negative: but original array changed.
+CODE:
+class Solution {
+    public int findDuplicate(int[] nums) {
+        for(int i=0;i<nums.length;i++) {
+            int ind = Math.abs(nums[i]);
+            if(nums[ind] < 0) {
+                return ind;
+            }
+            nums[ind] = -nums[ind];
+        }
+        return -1;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1)
+======================
+M-6) Optimal Solution: Using  Mod(1e5 + 1): but original array changed.
+
+
+
+
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int mod = (int)1e5 + 1;
+        for(int i=0;i<nums.length;i++) {
+            int ind = Math.abs(nums[i])%mod;
+            if(nums[ind]/mod > 0) {
+                return ind;
+            }
+            nums[ind] += mod;
+        }
+        return -1;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1)
+============
+M-7) Optimal Solution: According to question:using Hare & Tortoise Method
+CODE:
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int slow = nums[0];
+        int fast = nums[0];
+        do { // we are sure that at least one duplicate is there
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while(slow != fast);
+        // find the head of loop
+        fast = nums[0];
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return fast;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1)
+===========================================================
