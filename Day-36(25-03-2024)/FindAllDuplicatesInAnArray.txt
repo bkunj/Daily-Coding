@@ -1,0 +1,47 @@
+Q.18) 442. Find All Duplicates in an Array
+Link: https://leetcode.com/problems/find-all-duplicates-in-an-array/description/ 
+Solution:
+M-1) Brute Force:
+→ For each element traverse the array and check for their duplicate.
+Time Complexity: O(N*N), Space Complexity: O(1).
+=========
+M-2) Hashing:
+CODE:
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> ans = new ArrayList<>();
+        HashSet<Integer> set = new HashSet<>();
+        set.add(nums[0]);
+        for(int i=1;i<nums.length;i++){
+            if(set.contains(nums[i])) ans.add(nums[i]);
+            set.add(nums[i]);
+        }
+        return ans;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(N).
+===========
+M-3) Sorting:
+→ We can solve this problem using sorting.
+→ First sort the array and then iterate through the array and compare.
+Time Complexity: O(N*logN), Space Complexity: O(1).
+===============
+M-4) Optimal: Update our array:
+→ This problem can be efficiently solved by iterating through the array and using the array itself as a hashmap to mark visited elements. By negating the value at the index corresponding to each element encountered, we can mark it as visited. If we encounter a previously visited element (i.e., its value is already negative), we add it to the result list as it appears twice.
+CODE:
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int num = Math.abs(nums[i]);
+            int idx = num - 1;
+            if (nums[idx] < 0)
+                result.add(num);
+            nums[idx] *= -1;
+        }
+        return result;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1).
+============================================
