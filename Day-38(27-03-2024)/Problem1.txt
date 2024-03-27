@@ -1,0 +1,62 @@
+Q.) 713. Subarray Product Less Than K
+Link: https://leetcode.com/problems/subarray-product-less-than-k/description/ 
+Solution:
+M-1) Brute-Force:
+CODE:
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int n = nums.length;
+        int ans = 0;
+       
+        for (int i = 0; i < n; i++) {
+            int s = 1;
+            for (int j = i; j < n; j++) {
+                s *= nums[j];
+                if (s >= k)
+                    break;
+                ans++;
+            }
+        }
+       
+        return ans;
+    }
+}
+
+
+Time Complexity: O(N*N), Space Complexity: O(1)
+=============
+M-2) Sliding Window:
+Approach
+For subarray with product less than k, we can maintain two pointer.
+If current subarray sum is less than k, I can add new element in subarray.
+if current subarray sum is more than equal to k, I can remove first element from the subarray.
+But how do I maintain total no. of subarrays ?
+Let's see, initially my subarray is below
+[2, 4]
+ans = [2], [4], [2, 4]
+Now what if I add 3 here -> [2, 4, 3]
+ans = [2], [4], [2,4], [3], [4,3], [2,4,3]
+you can see the answer is prev + new length
+Now let's say what if I remove ?
+[2, 4, 3]
+remove 2 -> [4, 3]
+all are already included so no need to check, so we don't care if we remove.
+So when we add new element, and our product is less than k, I will add the subarray length to my answer.
+CODE:
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int s = 0, e = 0, prod = 1, ans = 0;
+        while(e < nums.length) {
+            prod *= nums[e++]; // include
+            while(s < e && prod >= k) {
+                prod /= nums[s++]; // exclude start
+            }
+            if(prod < k) {
+                ans += e-s; // add to answer if it is valid
+            }
+        }
+        return ans;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1)
+================================
