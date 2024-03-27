@@ -1,0 +1,58 @@
+Q.) 2110. Number of Smooth Descent Periods of a Stock
+Link: https://leetcode.com/problems/number-of-smooth-descent-periods-of-a-stock/description/ 
+Solution: 
+M-1) Brute Force:
+→ examining all possible pairs of prices and counting the periods of descending prices.
+CODE:
+class Solution {
+    public long getDescentPeriods(int[] prices) {
+        long count = 0;
+
+
+        for (int i = 0; i < prices.length; i++) {
+            for (int j = i + 1; j < prices.length; j++) {
+                if (prices[j - 1] - prices[j] == 1) {
+                    count++;
+                } else {
+                    break; // Break the inner loop if the prices start increasing
+                }
+            }
+        }
+
+
+        return count;
+    }
+}
+Time Complexity: O(N*N) , Space Complexity: O(1)
+===================
+M-2) Optimal: Two Pointer/Sliding Window
+Intuition
+The intuition behind this algorithm is to count the number of "descent periods" in the given array of prices. A descent period is defined as a continuous subsequence of prices where each price is one less than its preceding price.
+
+
+Approach
+Initialize a variable count to 1 to account for the possibility of a descent period starting from the first price.
+Initialize a pointer j to track the starting index of the current descent period.
+Iterate through the prices array starting from index 1:
+If the difference between the current price and the previous price is not equal to 1, update j to the current index, indicating the start of a new descent period.
+Increment count by the length of the current descent period (i - j + 1), where i is the current index.
+Return the final count, which represents the total number of descent periods in the array.
+CODE:
+class Solution {
+    public long getDescentPeriods(int[] prices)
+    {
+        long count=1;;int j=0;
+        for(int i=1;i<prices.length;i++)
+        {
+            if(prices[i-1]-prices[i]!=1)
+            {
+                j=i;  
+            }
+            count+=i-j+1;
+        }
+        // if(prices)
+        return count;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1)
+======================================
