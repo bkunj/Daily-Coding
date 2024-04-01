@@ -1,0 +1,41 @@
+Q.) 12. Integer to Roman
+Link: https://leetcode.com/problems/integer-to-roman/description/ 
+Solution:
+To convert an integer into its Roman numeral representation, you can follow these steps:
+
+
+Create arrays to store the Roman numeral symbols and their corresponding integer values.
+Iterate through the integer values in reverse order, starting from the largest Roman numeral symbol.
+For each Roman numeral symbol, check how many times it can be subtracted from the given integer.
+Append the Roman numeral symbol to the result string and subtract its corresponding value from the integer.
+Repeat the process until the integer becomes zero.
+CODE1:
+class Solution {
+    public String intToRoman(int num) {
+       // Define Roman numeral symbols and their corresponding values
+        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+       
+        StringBuilder roman = new StringBuilder();
+        // Iterate through symbols and values
+        int i = 0;
+        while (num > 0) {
+            // Check how many times the current symbol can be subtracted
+            int count = num / values[i];
+            // Append the symbol to the result string count times
+            for (int j = 0; j < count; j++) {
+                roman.append(symbols[i]);
+            }
+            // Subtract the corresponding value from the number
+            num -= values[i] * count;
+            // Move to the next symbol
+            i++;
+        }
+       
+        return roman.toString();
+    }
+}
+Time Complexity: O(1) , Space Complexity: O(1)
+
+
+================================================
