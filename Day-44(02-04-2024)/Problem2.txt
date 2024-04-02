@@ -1,0 +1,34 @@
+Q.) 744. Find Smallest Letter Greater Than Target 
+Link: https://leetcode.com/problems/find-smallest-letter-greater-than-target/description/ 
+Solution:
+M-1) Brute-Force: Linear Search
+→ Traverse the array and for each character compare with the target character.
+→ For the very first character which is just greater with the target is the answer.
+
+Time Complexity: O(N), Space Complexity: O(1)
+===========
+M-2) Optimal Solution: Using binary Search
+→ CODE:
+class Solution {
+    public char nextGreatestLetter(char[] letters, char target) {
+        int start = 0;
+        int end = letters.length-1;
+        int ans = 0;
+
+
+        while(start<=end){
+            int mid = start + (end-start)/2;
+            if(letters[mid]<=target){
+                start = mid+1;
+            }
+            else{
+                ans = mid;
+                end = mid-1;
+            }
+        }
+        return letters[ans];
+    }
+}
+
+Time Complexity: O(log(N)), Space Complexity: O(1).
+====================================
