@@ -1,0 +1,61 @@
+Q.) 1544. Make The String Great
+Link: https://leetcode.com/problems/make-the-string-great/description/ 
+Solution:
+M-1) Using Stack:
+We use a stack to process the characters of the input string.
+If the current character and the character at the top of the stack react (i.e., they are the same letter but different cases), we remove both characters from the stack.
+Otherwise, we push the current character onto the stack.
+After processing all characters, we construct the resulting string by popping characters from the stack.
+Since characters are popped in reverse order, we reverse the string to get the final result.
+This approach efficiently removes adjacent characters that react with each other, resulting in the expected output.
+CODE:
+class Solution {
+    public String makeGood(String s) {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder ans = new StringBuilder();
+       for(char ch: s.toCharArray()){
+         if (!stack.isEmpty() && Math.abs(stack.peek() - ch) == 32) {
+                // If the adjacent characters are the same letter but different cases, remove the previous character
+                stack.pop();
+            } else {
+                // Otherwise, add the current character to the stack
+                stack.push(ch);
+            }
+        }
+       // Build the resulting string from the characters remaining in the stack
+        while (!stack.isEmpty()) {
+            ans.append(stack.pop());
+        }
+        
+        // Reverse the string because characters were popped from the stack in reverse order
+        return ans.reverse().toString();
+    }
+}
+Time Complexity: O(N), Space Complexity: O(N)
+=========
+M-2) Optimal: Without Stack
+CODE:
+class Solution {
+    public String makeGood(String s) {
+        int endPosition = 0; // Represents the end position of the modified string
+        char[] charArray = s.toCharArray(); // Convert the string to a character array
+       
+        // Loop through each character in the string
+        for (int currentPosition = 0; currentPosition < s.length(); currentPosition++) {
+            // Check if the current character can be removed
+            if (endPosition > 0 && Math.abs(charArray[currentPosition] - charArray[endPosition - 1]) == 32){
+                endPosition--; // Decrement the end position if the current character can be removed
+            }else {
+                // Otherwise, keep the current character and increment the end position
+                charArray[endPosition] = charArray[currentPosition];
+                endPosition++;
+            }
+        }
+
+
+        // Convert the modified character array to a string and return only the valid portion
+        return new String(charArray).substring(0, endPosition);
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1)
+=================================================================
