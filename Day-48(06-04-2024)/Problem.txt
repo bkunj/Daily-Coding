@@ -1,0 +1,47 @@
+Q.) 1249. Minimum Remove to Make Valid Parentheses
+Link: https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/description/ 
+Solution:
+M-1) Using Stack:
+Intuition:
+We use a stack to keep track of the parentheses encountered while iterating through the string.
+We maintain a counter cnt to track the number of opening '(' parentheses.
+During the iteration, we push '(' parentheses onto the stack and increment cnt, and when encountering ')', we decrement cnt if there's a corresponding '(' in the stack.
+After processing all characters, we handle the excess '(' parentheses by iterating through the remaining characters in the stack.
+We construct the resulting string by inserting characters from the stack at the beginning of the StringBuilder ans.
+The resulting string contains the minimum number of parentheses to make the input string valid.
+CODE:
+import java.util.Stack;
+
+
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder ans = new StringBuilder();
+        int cnt = 0;
+       
+        for (char ch : s.toCharArray()) {
+            if (ch == '(') {
+                cnt++;
+                stack.push(ch);
+            } else if (ch == ')' && cnt > 0) {
+                cnt--;
+                stack.push(ch);
+            } else if (Character.isLetter(ch)) {
+                stack.push(ch);
+            }
+        }
+       
+        while (!stack.isEmpty()) {
+            char ch = stack.pop();
+            if (ch == '(' && cnt > 0) {
+                cnt--;
+            } else {
+                ans.insert(0, ch); // Insert character at the beginning of the string
+            }
+        }
+       
+        return ans.toString();
+    }
+}
+Time Complexity: O(N), Space Complexity: O(N).
+======================
