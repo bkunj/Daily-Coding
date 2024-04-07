@@ -1,0 +1,68 @@
+Q.) 678. Valid Parenthesis String
+Link: https://leetcode.com/problems/valid-parenthesis-string/description/ 
+M-1) Using Stack:
+→ Maintain two stacks to track the indices of '(' and '' characters, attempts to match ')' characters with '(' characters or '' characters, and verifies that all '(' characters are balanced by either matching ')' characters or '*' characters.
+CODE:
+import java.util.Stack;
+class Solution {
+    public boolean checkValidString(String s) {
+        Stack<Integer> leftStack = new Stack<>();
+        Stack<Integer> starStack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                leftStack.push(i);
+            } else if (ch == '*') {
+                starStack.push(i);
+            } else { // ch == ')'
+                if (!leftStack.isEmpty()) {
+                    leftStack.pop();
+                } else if (!starStack.isEmpty()) {
+                    starStack.pop();
+                } else {
+                    return false; // ')' cannot be matched
+                }
+            }
+        }
+        while (!leftStack.isEmpty() && !starStack.isEmpty()) {
+            if (leftStack.peek() > starStack.peek()) {
+                return false; // '*' appears before '('
+            }
+            leftStack.pop();
+            starStack.pop();
+        }
+        return leftStack.isEmpty();
+    }
+}
+Time Complexity: O(N), Space Complexity: O(N).
+=========
+M-2) Without Stack( Greedy Approach):
+We iterate through the characters of the input string from right to left.
+We update bMin and bMax based on the type of character encountered ('(', ')', or '*').
+We check if bMax becomes negative at any point during the iteration. If it does, we return false immediately since it indicates an invalid string.
+We ensure that bMin never becomes negative by setting it to zero if it becomes negative during the iteration.
+Finally, we return true if bMin is zero, indicating a valid string. Otherwise, we return false.
+CODE:
+public class Solution {
+    public boolean checkValidString(String s) {
+        int leftMin = 0, leftMax = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                leftMin++;
+                leftMax++;
+            } else if (c == ')') {
+                leftMin--;
+                leftMax--;
+            } else {
+                leftMin--;
+                leftMax++;
+            }
+            if (leftMax < 0) return false;
+            if (leftMin < 0) leftMin = 0;
+        }
+        return leftMin == 0;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1).
+
+==============================================================
