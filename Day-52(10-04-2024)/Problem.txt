@@ -1,0 +1,66 @@
+Q.) 950. Reveal Cards In Increasing Order
+Link: https://leetcode.com/problems/reveal-cards-in-increasing-order/description/ 
+Solution: 
+M-1) Simulation:
+→ Sort the array and put the deck elements into answer array alternatively.
+CODE:
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        int n = deck.length;
+        int[] ans = new int[n];
+        boolean skip = false;
+        int i = 0; // for 0 to n-1 traverse
+        int j = 0; // for storing answers
+        Arrays.sort(deck);
+        while (i < n) {
+            if (ans[j] == 0) { // shows empty
+                if (!skip) {
+                    ans[j] = deck[i];
+                    i++;
+                }
+               
+                skip = !skip; // alternate
+            }
+            j = (j + 1) % n;
+        }
+        return ans;
+    }
+}
+Time Complexity:O(Nlog(N)), Space Complexity:O(1).
+==================
+M-2) Simulation Using Queue:
+
+
+The goal is to simulate the process of revealing cards from a deck while ensuring that the revealed cards are in increasing order.
+To achieve this:
+We first create a queue containing indices representing positions in the deck.
+We sort the deck in ascending order.
+Then, we iterate over the sorted deck and at each step:
+We pick an index from the front of the queue, representing the next position to reveal.
+We assign the value of the current element in the sorted deck to the corresponding position in the result array.
+We simulate the rotation of the deck by moving the front index of the queue to the back, ensuring that the next card to reveal is positioned correctly.
+By following this process, we reveal the cards in increasing order, maintaining the order of the sorted deck.
+CODE:
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        int n = deck.length;
+        Queue<Integer> que = new LinkedList<>();
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            que.offer(i);
+        }
+        Arrays.sort(deck);
+        for (int i = 0; i < n; i++) {
+            int idx = que.poll();
+            ans[idx] = deck[i];
+           
+            if (!que.isEmpty()) {
+                que.offer(que.peek());
+                que.poll();
+            }
+        }
+        return ans;
+    }
+}
+Time Complexity: O(Nlog(N)), Space Complexity: O(N)
+=================================
