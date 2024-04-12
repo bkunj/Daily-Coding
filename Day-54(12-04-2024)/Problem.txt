@@ -1,0 +1,53 @@
+Q.) 1318. Minimum Flips to Make a OR b Equal to c
+Link: https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/description/ 
+Solution:
+
+M-1) Going Bit By Bit: visiting each bit one by one
+CODE:
+class Solution {
+    public int minFlips(int a, int b, int c) {
+        int flipCount = 0;
+        while (a != 0 || b != 0 || c != 0) {
+            // Check the least significant bit (LSB) of c
+            if ((c & 1) == 1) {
+                // If LSB of c is 1, ensure either LSB of a or b is 1
+                if ((a & 1) == 0 && (b & 1) == 0) {
+                    flipCount++;
+                }
+            } else {
+                // If LSB of c is 0, ensure both LSB of a and b are 0
+                if ((a & 1) == 1) {
+                    flipCount++;
+                }
+                if ((b & 1) == 1) {
+                    flipCount++;
+                }
+            }
+
+
+            // Right shift a, b, and c to process the next bit
+            a >>= 1;
+            b >>= 1;
+            c >>= 1;
+        }
+        return flipCount;
+    }
+}
+TIME COMPLEXITY:
+Given that the maximum number of iterations is equal to the number of bits in the largest number, the time complexity of the code is O(log(max(a, b, c))), where max(a, b, c) represents the largest of the three input integers (a, b, and c). This is because the number of bits in a binary representation of an integer is proportional to the logarithm (base 2) of its value.
+In summary, the code iterates through each bit of the integers, which takes time proportional to the number of bits in the largest integer. Therefore, the time complexity of the code is O(log(max(a, b, c))).
+================
+M-2) Using Inbuilt Function: In C++ → __builtin_popcount(result) 
+CODE:
+public class Solution {
+    public int minFlips(int a, int b, int c) {
+        // Calculate the XOR between the OR of a and b and c
+        int result = (a | b) ^ c;
+        // Calculate the bitwise AND of a and b, then AND with result
+        int mask = (a & b) & result;
+        // Calculate the sum of the number of set bits (1s) in result and mask
+        int flipCount = Integer.bitCount(result) + Integer.bitCount(mask);
+        return flipCount;
+    }
+}
+============================================================
