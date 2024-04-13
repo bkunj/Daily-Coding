@@ -1,0 +1,50 @@
+Q.2) 137. Single Number II
+Link: https://leetcode.com/problems/single-number-ii/description/ 
+Solution:
+M-1) Brute-Force Method: 
+→ Using the HashMap concept we can store the frequency of each element and return the element whose frequency is 1.
+Time Complexity: O(N), Space Complexity: O(N).
+=================
+M-2) Better Solution:
+→ Sort the array and then traverse it. And find the element whose count is 1.
+Time Complexity: O(Nlog(N) + N), Space Complexity: O(1).
+==================
+M-3) Optimal: Bit Manipulation:
+
+CODE:
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        
+        int result = 0;
+        
+        for(int i = 0; i<32; i++) {
+            
+            int temp = (1 << i);
+            
+            int countOne  = 0;
+            int countZero = 0;
+            
+            for(int &num : nums) {
+                
+                if((num&temp) == 0) {
+                    countZero++;
+                } else {
+                    countOne++;
+                }
+                
+            }
+            
+            if(countOne % 3 == 1) {
+                result = (result | temp);
+            }
+            
+        }
+        
+        return result;
+        
+    }
+}
+
+Time Complexity: O(N), Space Complexity: O(1)
+===================================================================
