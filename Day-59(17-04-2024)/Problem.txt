@@ -1,0 +1,54 @@
+Q.) 988. Smallest String Starting From Leaf
+Link: https://leetcode.com/problems/smallest-string-starting-from-leaf/description/ 
+Solution:
+CODE-1) DFS
+class Solution {
+    public String smallestFromLeaf(TreeNode root) {
+        return getSmallestFromLeaf(root, "");
+    }
+    private String getSmallestFromLeaf(TreeNode root, String currentString) {
+        if (root == null) return "";
+        // Form the new string by appending the current node's value to the current string
+        String newString = (char)('a' + root.val) + currentString;
+        // If it's a leaf node, return the formed string
+        if (root.left == null && root.right == null) {
+            return newString;
+        }
+        // Recursively get the smallest string from the left and right subtrees
+        String leftString = getSmallestFromLeaf(root.left, newString);
+        String rightString = getSmallestFromLeaf(root.right, newString);
+        // Compare the lexicographically smallest string from left and right subtrees
+        if (leftString.isEmpty()) return rightString;
+        if (rightString.isEmpty()) return leftString;
+        return leftString.compareTo(rightString) < 0 ? leftString : rightString;
+    }
+}
+T.C = O(N),  S.C = O(1), Recursion stack system space = O(H), H = O(logN).
+===========
+CODE:4) BFS iterative (Queue)
+class Solution {
+    public String smallestFromLeaf(TreeNode root) {
+        Queue<Pair<TreeNode, String>> queue = new LinkedList<>();
+        String result = "";
+        queue.add(new Pair<>(root, String.valueOf((char)(root.val + 'a'))));
+        while (!queue.isEmpty()) {
+            Pair<TreeNode, String> pair = queue.poll();
+            TreeNode node = pair.getKey();
+            String curr = pair.getValue();
+            if (node.left == null && node.right == null) {
+                if (result.equals("") || result.compareTo(curr) > 0) {
+                    result = curr;
+                }
+            }
+            if (node.left != null) {
+                queue.add(new Pair<>(node.left, (char)(node.left.val + 'a') + curr));
+            }
+            if (node.right != null) {
+                queue.add(new Pair<>(node.right, (char)(node.right.val + 'a') + curr));
+            }
+        }
+        return result;
+    }
+}
+T.C = O(N),  S.C = O(N)
+===============================================================
