@@ -1,0 +1,110 @@
+Q.) 1971. Find if Path Exists in Graph
+Link: https://leetcode.com/problems/find-if-path-exists-in-graph/description/ 
+Solution:
+M-1) DFS:
+CODE:
+class Solution {
+    boolean check(Map<Integer, List<Integer>> mp, int node, int dest, boolean[] visited) {
+        if (node == dest)
+            return true;
+       
+        if (visited[node])
+            return false;
+       
+        visited[node] = true;
+        for (int it : mp.get(node)) {
+            if (check(mp, it, dest, visited))
+                return true;
+        }
+        return false;
+    }
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        if (source == destination)
+            return true;
+       
+        Map<Integer, List<Integer>> mp = new HashMap<>();
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+           
+            if (!mp.containsKey(u))
+                mp.put(u, new ArrayList<>());
+            if (!mp.containsKey(v))
+                mp.put(v, new ArrayList<>());
+           
+            mp.get(u).add(v);
+            mp.get(v).add(u);
+        }
+
+
+        boolean[] visited = new boolean[n];
+        return check(mp, source, destination, visited);
+    }
+}
+Time Complexity: O(N+E), Space Complexity:O(N)
+=========
+CODE2:
+class Solution {
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        if(edges.length == 0) return true;
+        boolean[] visited = new boolean[n];
+        boolean flag = true;
+        visited[source] = true;
+
+
+        while(flag){
+            flag=false;
+            for(int[] edge:edges){
+                if(visited[edge[0]]!=visited[edge[1]]){
+                    visited[edge[0]]=true;
+                    visited[edge[1]]=true;
+                    flag = true;
+                }
+                if(visited[destination]) return true;
+            }
+        }
+        return false;
+    }
+}
+Time Complexity: O(N+E), Space Complexity:O(N), n=vertices,e=edges
+==================
+M-2) BFS:
+CODE:
+public class Solution {
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        Map<Integer, List<Integer>> mp = new HashMap<>();
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+           
+            if (!mp.containsKey(u))
+                mp.put(u, new ArrayList<>());
+            if (!mp.containsKey(v))
+                mp.put(v, new ArrayList<>());
+           
+            mp.get(u).add(v);
+            mp.get(v).add(u);
+        }
+        boolean[] visited = new boolean[n];
+       
+        Queue<Integer> que = new LinkedList<>();
+        que.offer(source);
+        visited[source] = true;
+       
+        while (!que.isEmpty()) {
+            int node = que.poll();
+            if (node == destination)
+                return true;
+           
+            for (int it : mp.get(node)) {
+                if (!visited[it]) {
+                    visited[it] = true;
+                    que.offer(it);
+                }
+            }
+        }
+        return false;
+    }
+}
+Time Complexity: O(N+E), Space Complexity:O(N), n=vertices,e=edges
+====================================================================
