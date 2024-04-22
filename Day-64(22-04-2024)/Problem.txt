@@ -1,0 +1,59 @@
+Q.) 752. Open the Lock
+Link: https://leetcode.com/problems/open-the-lock/description/ 
+Solution:
+Using BFS:
+CODE:
+class Solution {
+    private char turnRight(char c){
+        return (c == '9' ? '0' : (char)(c + 1));
+    }
+   
+    private char turnLeft(char c){
+        return (c == '0' ? '9' : (char)(c - 1));
+    }
+   
+    private List<String> nextOptions(String s){
+        List<String> ans = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            char[] copy = s.toCharArray();
+            copy[i] = turnRight(s.charAt(i));
+            ans.add(new String(copy));
+            copy[i] = turnLeft(s.charAt(i));
+            ans.add(new String(copy));
+        }
+        return ans;
+    }
+
+
+    public int openLock(String[] deadends, String target) {
+        Queue<String> queue = new LinkedList<>();
+        HashMap<String, Boolean> vis = new HashMap<>();
+        queue.offer("0000");
+        vis.put("0000", true);
+        int level = 0;
+        HashSet<String> deadendSet = new HashSet<>(Arrays.asList(deadends));
+       
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size-- > 0) {
+                String s = queue.poll();
+                if (s.equals(target)) return level;
+                if (deadendSet.contains(s)) continue;
+
+
+                for (String option : nextOptions(s)) {
+                    if (!vis.containsKey(option) || !vis.get(option)) {
+                        queue.offer(option);
+                        vis.put(option, true);
+                    }
+                }
+            }
+            level++;
+        }
+        return -1;
+    }
+}
+=================
+Time Complexity: O(N*W), where N = number of slots in each wheel and we       have W=4 wheels.
+Space Complexity: O(N*W), in the worst case we have to store all possible combinations.
+======================================================================================
