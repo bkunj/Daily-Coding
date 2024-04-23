@@ -1,0 +1,60 @@
+Q.) 310. Minimum Height Trees 
+Link: https://leetcode.com/problems/minimum-height-trees/description/ 
+Solution: 
+M-1) Brute Force Method:
+→ Consider every node as a root node and find the height of the node.
+→ return the node which has minimum height.
+M-2) Topological Sort: BFS
+→ try to move from the leaf node towards the central node.
+→  answer can have at most 2 roots.
+CODE:
+import java.util.*;
+class Solution {
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if(n==1) return Collections.singletonList(0);
+
+
+        List<Integer> result = new ArrayList<>();
+        int[] indegree = new int[n];
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+
+
+        for(int[] edge:edges){
+            int u = edge[0];
+            int v = edge[1];
+            indegree[u]++;
+            indegree[v]++;
+            adj.computeIfAbsent(u, k-> new ArrayList<>()).add(v);
+            adj.computeIfAbsent(v, k-> new ArrayList<>()).add(u);
+        }
+
+
+        Queue<Integer> leaf = new LinkedList<>();
+        for(int i = 0;i<n;i++){
+            if(indegree[i] == 1) { // adding all leaf node so that we can remove them later
+               leaf.offer(i);
+            }
+        }
+        while(n>2){
+            int size = leaf.size();
+            n -= size; // removing nodes with indegree 1
+
+
+            while(size-- > 0){
+                int u = leaf.poll();
+                for(int v : adj.getOrDefault(u, Collections.emptyList())){
+                    indegree[v]--;
+                    if(indegree[v] == 1){
+                        leaf.offer(v);
+                    }
+                }
+            }
+        }
+        while(!leaf.isEmpty()){
+                result.add(leaf.poll());
+            }
+        return result;
+    }
+}
+Time Complexity: O(V+E) == Space Complexity.
+=======================================================================
