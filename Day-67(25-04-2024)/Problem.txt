@@ -1,0 +1,73 @@
+Q.) 70. Climbing Stairs
+Link: https://leetcode.com/problems/climbing-stairs/description/ 
+Solution:
+M-1) Brute Force Way:
+→ Count all possibilities
+Each Stairs has 2 possibilities .
+So Time Complexity: O(2^N);   ⇒ TLE (when, N>=45) ⇒ 2^45.
+=========================
+M-2) Memoization: (Top-Down) → recursion tree (going top to down)
+--> Since brute force methods have lots of repeating tasks which waste a lot of time. So why don’t we take a map which stores each task so that in future that task repeats we do not need to calculate again and again.
+CODE:
+class Solution {
+    private int solve(int n, int[] memo){
+        if(n<0) return 0;
+        if(memo[n]!=-1) {
+            return memo[n];
+        }
+        if(n==0) return 1;
+
+
+        int one_step = solve(n-1,memo);
+        int two_step = solve(n-2,memo);
+
+
+        return memo[n] = one_step + two_step;
+    }
+    public int climbStairs(int n) {
+        int[] memo = new int[46];
+        Arrays.fill(memo,-1); // Initialize memo array with -1
+        return solve(n,memo);
+    }
+}
+Time Complexity: O(N), Space Complexity: O(N).
+==========================
+M-2) Bottom-up Approach:
+
+CODE1: 
+class Solution {
+    public int climbStairs(int n) {
+        if(n == 1 || n == 2)
+            return n;
+       
+        int[] t = new int[n+1];
+        //t[i] = total ways to climb i stairs
+        t[0] = 0;
+        t[1] = 1;
+        t[2] = 2;
+        for(int i = 3; i<=n; i++) {
+            t[i] = t[i-1] + t[i-2];
+        }
+        return t[n];
+    }
+}
+==
+CODE2: improved version of code1
+class Solution {
+    public int climbStairs(int n) {
+        if(n==1){
+            return 1;
+        }
+        int first =1;
+        int second = 2;
+        int third;
+        for(int i=3;i<=n;i++){
+            third = second+first;
+            first = second;
+            second = third;
+        }
+        return second;
+    }
+}
+Time Complexity: O(N), Space Complexity: O(1).
+===================================================================
